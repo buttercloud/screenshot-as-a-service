@@ -95,10 +95,15 @@ module.exports = function(app, useCors) {
       console.log('Error while reading file: %s', err.message);
       callback(err);
     });
-    fileStream.pipe(request.post(url, function(err) {
-      if (err) console.log('Error while streaming screenshot: %s', err);
-      callback(err);
-    }));
+
+    var r = request.post(url, function optionalCallback (err, httpResponse, body) {
+      if (err) {
+        return console.error(err);
+      }
+    })
+
+    var form = r.form()
+    form.append('screenshot_file', fileStream)
   }
 
   var sendImageInResponse = function(imagePath, res, callback) {
