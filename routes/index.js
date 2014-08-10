@@ -60,7 +60,7 @@ module.exports = function(app, useCors) {
   var processImageUsingRasterizer = function(rasterizerOptions, filePath, res, url, callback) {
     if (url) {
       // asynchronous
-      res.send('Will post screenshot to ' + url + ' when processed');
+      res.send(200);
       callRasterizer(rasterizerOptions, function(error) {
         if (error) return callback(error);
         postImageToUrl(filePath, url, callback);
