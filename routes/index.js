@@ -49,7 +49,7 @@ module.exports = function(app, useCors) {
   var processImageUsingCache = function(filePath, res, url, callback) {
     if (url) {
       // asynchronous
-      res.send('Will post screenshot to ' + url + ' when processed');
+      res.send(200);
       postImageToUrl(filePath, url, callback);
     } else {
       // synchronous
