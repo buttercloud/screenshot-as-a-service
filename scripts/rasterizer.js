@@ -86,21 +86,25 @@ service = server.listen(port, function(request, response) {
     response.write('Error while parsing headers: ' + err.message);
     return response.close();
   }
+
   page.open(url, function(status) {
-    if (status == 'success') {
-      window.setTimeout(function () {
-        page.render(path);
-        response.write('Success: Screenshot saved to ' + path + "\n");
-        page.release();
-        response.close();
-      }, delay);
-    } else {
+    if (status !== 'success') {
+      page.close();
+      response.statusCode = 500;
       response.write('Error: Url returned status ' + status + "\n");
-      page.release();
       response.close();
+    } else {
+      window.setTimeout(function () {
+        if (page.plainText !== 'undefined' || page.plainText !== null) {
+          page.render(path);
+          response.write('Success: Screenshot saved to ' + path + "\n");
+          page.close();
+          response.close();
+        }
+      }, delay);
     }
   });
   // must start the response now, or phantom closes the connection
-  response.statusCode = 200;
-  response.write('');
+  //response.statusCode = 200;
+  //response.write('');
 });
