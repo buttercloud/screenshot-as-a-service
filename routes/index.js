@@ -45,6 +45,14 @@ module.exports = function(app, useCors) {
     res.redirect('/?url=' + req.url.substring(1));
   });
 
+  var sendErrorCallback = function(callbackUrl) {
+    request.post(callbackUrl, { form: {error: 'Could not load website.' } })
+  }
+
+  var sendErrorResponse = function(res) {
+    res.send(500, { error: 'Could not load website.' });
+  }
+
   // bits of logic
   var processImageUsingCache = function(filePath, res, url, callback) {
     if (url) {
@@ -62,13 +70,13 @@ module.exports = function(app, useCors) {
       // asynchronous
       res.send(200);
       callRasterizer(rasterizerOptions, function(error) {
-        if (error) return callback(error);
+        if (error) return sendErrorCallback(url);
         postImageToUrl(filePath, url, callback);
       });
     } else {
       // synchronous
       callRasterizer(rasterizerOptions, function(error) {
-        if (error) return callback(error);
+        if (error) return sendErrorResponse(res);
         sendImageInResponse(filePath, res, callback);
       });
     }
@@ -76,7 +84,7 @@ module.exports = function(app, useCors) {
 
   var callRasterizer = function(rasterizerOptions, callback) {
     request.get(rasterizerOptions, function(error, response, body) {
-      if (error || response.statusCode != 200) {
+      if (response.statusCode !== 200 || error) {
         console.log('Error while requesting the rasterizer: %s', error.message);
         rasterizerService.restartService();
         return callback(new Error(body));
