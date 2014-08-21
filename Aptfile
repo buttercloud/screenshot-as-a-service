@@ -1,0 +1,17 @@
+build-essential
+git-core
+g++
+openssl
+chrpath
+libssl-dev
+libfontconfig1-dev
+libglib2.0-dev
+libx11-dev
+libxext-dev
+libfreetype6-dev
+libxcursor-dev
+libxrandr-dev
+libxv-dev
+libxi-dev 
+libgstreamermm-0.10-dev 
+xvfb
