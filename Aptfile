@@ -15,3 +15,4 @@ libxv-dev
 libxi-dev 
 libgstreamermm-0.10-dev 
 xvfb
+libcap2-bin
