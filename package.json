@@ -11,5 +11,8 @@
     "config": "0.4.15",
     "request": "2.40.0",
     "phantomjs": "1.9.x"
+  },
+  "scripts": {
+    "start": "node app.js"
   }
 }
